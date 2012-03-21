@@ -3,6 +3,8 @@ bin/
 tmp/
 tests/source/
 dist/
+docs/
 
 .DS_Store
+.rvmrc
 .project

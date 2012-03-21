@@ -2,6 +2,7 @@ abort "Please use Ruby 1.9 to build Ember.js!" if RUBY_VERSION !~ /^1\.9/
 
 require "rubygems"
 require "net/github-upload"
+require "ember_docs/cli"
 
 require "bundler/setup"
 require "erb"
@@ -259,6 +260,27 @@ namespace :release do
 
     desc "Commit the new release"
     task :deploy => [:commit, :tag, :push]
+  end
+end
+
+namespace :docs do
+  def doc_args
+    "packages/ember-data -E packages/ember-data/tests -t docs.emberjs.com"
+  end
+
+  desc "Preview Ember Data Docs (does not auto update)"
+  task :preview do
+    EmberDocs::CLI.start("preview #{doc_args}".split(' '))
+  end
+
+  desc "Build Ember Data Docs"
+  task :build do
+    EmberDocs::CLI.start("generate #{doc_args} -o docs".split(' '))
+  end
+
+  desc "Remove Ember Data Docs"
+  task :clean do
+    rm_r "docs"
   end
 end
 
